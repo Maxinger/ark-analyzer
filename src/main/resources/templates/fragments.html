@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head">
+    <title>ARK Blockchain Analyzer</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css"
+          href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+</head>
+<body>
+    <nav class="navbar navbar-inverse" th:fragment="navigation(activeTab)">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">ARK Blockchain Analyzer</a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li th:class="${activeTab == 'delegates'} ? 'active' : null"><a href="/delegates">Deletages</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</body>
+</html>

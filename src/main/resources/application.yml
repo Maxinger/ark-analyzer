@@ -1,2 +1,3 @@
-server:
-  port: 8080
+server.port: 8080
+
+logging.level.groovyx.net: ERROR
