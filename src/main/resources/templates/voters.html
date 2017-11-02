@@ -37,7 +37,7 @@
                     <tr th:each="voter, iterStat : ${voters}">
                         <td th:text="${iterStat.count}"/>
                         <td th:text="${voter.address}"/>
-                        <td th:text="${#numbers.formatInteger(voter.balance, 0, 'DEFAULT')}"/>
+                        <td th:text="${#numbers.formatInteger(T(by.maxi.blockchain.ark.Utils).toArk(voter.balance), 0, 'DEFAULT')}"/>
                     </tr>
                 </tbody>
             </table>

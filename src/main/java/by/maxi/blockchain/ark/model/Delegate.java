@@ -13,7 +13,7 @@ public class Delegate {
     private String username;
     private String address;
     private String publicKey;
-    private String vote;
+    private Long vote;
     private Integer producedblocks;
     private Integer missedblocks;
     private Integer rate;

@@ -24,7 +24,7 @@
                                 <span th:text="${delegate.username}"/>
                             </a>
                         </td>
-                        <td th:text="${#numbers.formatInteger(delegate.vote, 0, 'DEFAULT')}"></td>
+                        <td th:text="${#numbers.formatInteger(T(by.maxi.blockchain.ark.Utils).toArk(delegate.vote), 0, 'DEFAULT')}"></td>
                         <td th:text="${delegate.approval} + '%'"></td>
                         <td th:text="${delegate.producedblocks}"></td>
                     </tr>

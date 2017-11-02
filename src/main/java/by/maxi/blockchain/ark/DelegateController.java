@@ -28,8 +28,6 @@ public class DelegateController {
 
     private static final Logger LOG = LoggerFactory.getLogger(DelegateController.class);
 
-    private static final Long TRILLION = 1000000000000L;
-
     @Autowired
     private DelegateService delegateService;
 
@@ -50,7 +48,7 @@ public class DelegateController {
         model.addAttribute("mean", voters.stream().mapToLong(Voter::getBalance).average().getAsDouble());
 
         try {
-            model.addAttribute("hist", buildChart(voters));
+            model.addAttribute("hist", buildVotersHistogram(voters));
         } catch (IOException e) {
             LOG.error("Failed to build a histogram for voters distribution", e);
         }
@@ -60,16 +58,16 @@ public class DelegateController {
         return "voters";
     }
 
-    private String buildChart(List<Voter> voters) throws IOException {
+    private String buildVotersHistogram(List<Voter> voters) throws IOException {
         List<Long> nums = voters.stream().mapToLong(Voter::getBalance).boxed().collect(Collectors.toList());
         Histogram hist = new Histogram(nums, Math.min(nums.size(), 5));
 
         CategoryChart chart = new CategoryChart(800, 500);
         chart.setTitle("Voters distribution");
-        chart.setXAxisTitle("Balances (in trillions)");
+        chart.setXAxisTitle("Balances (in thousands)");
         chart.setYAxisTitle("Number");
         chart.addSeries("hist",
-                hist.getxAxisData().stream().mapToLong(x -> Math.round(x / TRILLION)).boxed().collect(Collectors.toList()),
+                hist.getxAxisData().stream().mapToLong(Double::longValue).map(Utils::toKiloArk).boxed().collect(Collectors.toList()),
                 hist.getyAxisData());
 
         CategoryStyler styler = chart.getStyler();
