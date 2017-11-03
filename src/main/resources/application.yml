@@ -1,3 +1,21 @@
 server.port: 8080
 
 logging.level.groovyx.net: ERROR
+
+spring.datasource:
+  url: jdbc:mysql://127.0.0.1:3306/ark_analyzer
+  username: root
+  password: root
+  driver-class-name: com.mysql.jdbc.Driver
+
+spring.jpa.hibernate.ddl-auto: update
+
+network.peer:
+  max-calls: 30
+  max-time: 600000
+  ping-interval: 60000
+
+history.votes:
+  batch:
+    size: 10
+    interval: 5000

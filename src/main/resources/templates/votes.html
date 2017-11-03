@@ -5,7 +5,7 @@
     <nav th:replace="fragments::navigation(delegates)"/>
     <div class="container">
         <div class="starter-template">
-            <h1>ARK delegate voters</h1>
+            <h1>ARK delegate votes</h1>
 
             <div class="row">
                 <div class="col-md-2">
@@ -18,7 +18,7 @@
                 </div>
                 <div class="col-md-4">
                     <strong>Average balance: </strong>
-                    <span th:text="${#numbers.formatDecimal(mean, 0, 'DEFAULT', 2, 'DEFAULT')}"/>
+                    <span th:text="${#numbers.formatDecimal(T(by.maxi.blockchain.ark.Utils).toArk(mean), 0, 'DEFAULT', 0, 'DEFAULT')}"/>
                 </div>
             </div>
 
@@ -39,6 +39,26 @@
                         <td th:text="${voter.address}"/>
                         <td th:text="${#numbers.formatInteger(T(by.maxi.blockchain.ark.Utils).toArk(voter.balance), 0, 'DEFAULT')}"/>
                     </tr>
+                </tbody>
+            </table>
+
+            <h2>Active votes</h2>
+            <table id="votes" class="table table-striped table-bordered" cellspacing="0">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Voter public key</th>
+                    <th>Balance</th>
+                    <th>Duration</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="vote, iterStat : ${votes}">
+                    <td th:text="${iterStat.count}"/>
+                    <td th:text="${vote.voterPublicKey}"/>
+                    <td th:text="${#numbers.formatInteger(T(by.maxi.blockchain.ark.Utils).toArk(vote.balance), 0, 'DEFAULT')}"/>
+                    <td th:text="${vote.duration} + ' blocks (' + ${vote.durationInDays} + ' days)'"/>
+                </tr>
                 </tbody>
             </table>
         </div>

@@ -4,12 +4,16 @@ The project allows to analyze current ARK delegates statistics. It can be helpfu
 
 ## Usage
  
-Build the project with Maven:
+1. Create a database in MySQL:
 
-`mvn clean install`
+    `create database ark_analyzer;`
 
-Run Spring Boot application:
+2. Build the project with Maven:
 
-`java -jar target/ark-analyzer-0.1-SNAPSHOT.jar`
+    `mvn clean install`
 
-Open URL: http://localhost:8080
+3. Run Spring Boot application:
+
+    `java -jar target/ark-analyzer-0.1-SNAPSHOT.jar`
+
+4. Open URL: http://localhost:8080

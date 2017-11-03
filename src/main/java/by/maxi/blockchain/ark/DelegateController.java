@@ -1,7 +1,10 @@
 package by.maxi.blockchain.ark;
 
+import by.maxi.blockchain.ark.model.Vote;
 import by.maxi.blockchain.ark.model.Voter;
+import by.maxi.blockchain.ark.service.BlockChainService;
 import by.maxi.blockchain.ark.service.DelegateService;
+import by.maxi.blockchain.ark.service.VoteService;
 import org.knowm.xchart.BitmapEncoder;
 import org.knowm.xchart.CategoryChart;
 import org.knowm.xchart.Histogram;
@@ -18,6 +21,7 @@ import java.io.IOException;
 import java.util.Base64;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -30,6 +34,12 @@ public class DelegateController {
 
     @Autowired
     private DelegateService delegateService;
+
+    @Autowired
+    private VoteService voteService;
+
+    @Autowired
+    private BlockChainService blockChainService;
 
     @GetMapping({"/", "/delegates"})
     public String delegatesList(Model model) {
@@ -55,7 +65,19 @@ public class DelegateController {
 
         model.addAttribute("voters", voters.stream().sorted(Comparator.comparingLong(Voter::getBalance).reversed())
                 .limit(10).collect(Collectors.toList()));
-        return "voters";
+
+        Map<String, Long> balances = voters.stream().collect(Collectors.toMap(Voter::getPublicKey, Voter::getBalance));
+        List<Vote> votes = voteService.getActiveVotes(publicKey);
+        long totalBlocks = blockChainService.getBlockCount();
+
+        votes.forEach(v -> {
+            v.setDuration(totalBlocks - v.getBlockHeight());
+            v.setBalance(balances.getOrDefault(v.getVoterPublicKey(), 0L));
+        });
+
+        model.addAttribute("votes", votes.stream().filter(v -> v.getBalance() > 0).collect(Collectors.toList()));
+
+        return "votes";
     }
 
     private String buildVotersHistogram(List<Voter> voters) throws IOException {
